@@ -63,7 +63,7 @@ def train(args):
             print(f"{args.experim_name} Epoch {epoch+1} | "
                   f"train | mIoU {train_miou:.3f} | accuracy {train_acc:.3f} | loss {train_loss:.3f} | "
                   f"lr {optimizer.param_groups[0]['lr']:.2e}", end=' | ')
-            print(f"valid | mIoU {val_miou:.3f} | accuracy {val_acc:.3f} | loss {val_loss:.3f} | time {time.time() - start:.2f}", flush=True)
+            print(f"valid | mIoU {val_miou:.3f} | accuracy {val_acc:.3f} | loss {val_loss:.3f} | time idk", flush=True)
         recorder.update([train_miou, train_acc, train_loss, val_miou, val_acc, val_loss])
         recorder.save(args.record_path)
         if args.metric.startswith("IoU"):

@@ -8,7 +8,7 @@ n_classes: 4
 split_info:
   type: CSVSplit
   test_type: CSVSplit
-  split_file: full_CV6.csv
+  split_file: split_cv.csv
   split_col_name: CV0
   train_split_num: 0
   val_split_num: 1

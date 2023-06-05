@@ -8,13 +8,13 @@ n_classes: 4
 split_info:
   type: CSVSplit
   test_type: CSVSplit
-  split_file: split_single.csv
-  split_col_name: split
-  train_split_num: 1
-  val_split_num: -1
-  test_split_num: -2
+  split_file: full_CV6.csv
+  split_col_name: CV0
+  train_split_num: 0
+  val_split_num: 1
+  test_split_num: 2
   train_reverse: True
-  n_cross_valid: 4
+  n_cross_valid: 6
 
 # data information
 train_size: [224, 224]

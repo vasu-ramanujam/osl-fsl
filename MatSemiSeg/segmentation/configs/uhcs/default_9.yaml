@@ -13,8 +13,7 @@ split_info:
   train_split_num: 9
   val_split_num: -1
   test_split_num: -2
-  train_reverse: True
-  n_cross_valid: 4
+  train_reverse: False
 
 # data information
 train_size: [224, 224]

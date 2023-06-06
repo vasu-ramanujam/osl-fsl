@@ -54,6 +54,11 @@ def evaluate(args, mode, save_pred=False):
     )
     miou, acc = scores['mIoU'], scores['accuracy']
     print(f"{mode} | mIoU {miou:.3f} | accuracy {acc:.3f} | loss {eval_loss:.3f}")
+    #start edit
+    ious = scores['IoUs']
+    if mode == 'test':
+        print(f"IoUs: {ious}")
+    #end edit
     return scores
 
 

@@ -87,7 +87,7 @@ class ModelSaver:
 
     def save_models(self, score, epoch, model, ious):
         if score > self.best_score + self.delta:
-            print(f"validation iou improved from {self.best_score:.5f} to {score:.5f}.")
+            #print(f"validation iou improved from {self.best_score:.5f} to {score:.5f}.")
             self.best_score = score
             self.best_epoch = epoch
             torch.save({

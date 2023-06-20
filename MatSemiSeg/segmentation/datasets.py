@@ -52,7 +52,7 @@ class DatasetTemplate(data.Dataset):
 
     def _transform(self, img, label):
         img = np.array(img)
-        transformed = self.transform(img) #image=, mask=label
+        transformed = self.transform(image=img, mask=label) #image=, mask=label
         img = transformed['image']
         label = transformed['mask']
         return img, label
@@ -143,28 +143,20 @@ def get_transform(args, is_train):
     """
     if is_train:
         policies = {
-            'cifar10': T.AutoAugmentPolicy.CIFAR10
+            'cifar10': A.AutoAugmentPolicy.CIFAR10
         }
         augmentation_dict = {
-            'randaugment': T.RandAugment(args.augmentations['num_ops'], args.augmentations['magnitude']),
+            'randaugment': A.AlbumentationsRandAugment(args.augmentations['num_ops'], args.augmentations['magnitude']),
             'autoaugment': T.AutoAugment(policies[args.augmentations['policy']])
             #add others , 
         }
 
-        transform = T.Compose([
-            augmentation_dict[args.augmentations['type']],
-            T.Normalize(mean=args.mean, std=args.std),
-            ToTensorV2()
-        ])
-        
-        ew = '''
         transform = A.Compose([
-            A.RandomCrop(*args.train_size),
-            *get_list_of_ops(args.augmentations, A),
+            augmentation_dict[args.augmentations['type']],
             A.Normalize(mean=args.mean, std=args.std),
             ToTensorV2()
         ])
-        '''
+        
         #albumentations and pytorch functions dont work well together, ugh
     else:
         transform = A.Compose([
@@ -173,7 +165,6 @@ def get_transform(args, is_train):
             ToTensorV2()
         ])
     return transform
-
 
 def visualize_augmentations(dataset, idx=0, n_samples=5):
     """

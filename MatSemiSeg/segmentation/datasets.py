@@ -142,9 +142,12 @@ def get_transform(args, is_train):
     :return: transform operations to be performed on the image
     """
     if is_train:
+        policies = {
+            'cifar10': T.AutoAugmentPolicy.CIFAR10
+        }
         augmentation_dict = {
             'randaugment': T.RandAugment(args.augmentations['num_ops'], args.augmentations['magnitude']),
-            'autoaugment': T.AutoAugment(args.augmentations['policy'])
+            'autoaugment': T.AutoAugment(policies[args.augmentations['policy']])
             #add others , 
         }
 

@@ -143,12 +143,13 @@ def get_transform(args, is_train):
     """
     if is_train:
         augmentation_dict = {
-            'randaugment': T.RandAugment(args.augmentations.num_ops, args.augmentations.magnitude),
-            'autoaugment': T.AutoAugment(args.augmentations.policy)
+            'randaugment': T.RandAugment(args.augmentations['num_ops'], args.augmentations['magnitude']),
+            'autoaugment': T.AutoAugment(args.augmentations['policy'])
             #add others , 
         }
+
         transform = A.Compose([
-            T.RandAugment(num_ops, magnitude),
+            augmentation_dict[args.augmentations['type']],
             A.Normalize(mean=args.mean, std=args.std),
             ToTensorV2()
         ])

@@ -153,10 +153,11 @@ def get_transform(args, is_train):
 
         transform = T.Compose([
             augmentation_dict[args.augmentations['type']],
-            A.Normalize(mean=args.mean, std=args.std),
+            T.Normalize(mean=args.mean, std=args.std),
             ToTensorV2()
         ])
-        hi = '''
+        
+        ew = '''
         transform = A.Compose([
             A.RandomCrop(*args.train_size),
             *get_list_of_ops(args.augmentations, A),
@@ -164,6 +165,7 @@ def get_transform(args, is_train):
             ToTensorV2()
         ])
         '''
+        #albumentations and pytorch functions dont work well together, ugh
     else:
         transform = A.Compose([
             A.Resize(*args.eval_size),

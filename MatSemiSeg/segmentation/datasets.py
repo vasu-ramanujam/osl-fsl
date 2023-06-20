@@ -8,6 +8,7 @@ from torch.utils import data
 from torch.utils.data import DataLoader
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
+import torchvision.transforms as T
 
 
 class DatasetTemplate(data.Dataset):
@@ -147,7 +148,7 @@ def get_transform(args, is_train):
             #add others , 
         }
         transform = A.Compose([
-            A.RandAugment(num_ops, magnitude),
+            T.RandAugment(num_ops, magnitude),
             A.Normalize(mean=args.mean, std=args.std),
             ToTensorV2()
         ])

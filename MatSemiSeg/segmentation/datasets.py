@@ -141,12 +141,24 @@ def get_transform(args, is_train):
     :return: transform operations to be performed on the image
     """
     if is_train:
+        augmentation_dict = {
+            'randaugment': A.RandAugment(args.augmentations.num_ops, args.augmentations.magnitude),
+            'autoaugment': A.AutoAugment(args.augmentations.policy)
+            #add others , 
+        }
+        transform = A.Compose([
+            A.RandAugment(num_ops, magnitude),
+            A.Normalize(mean=args.mean, std=args.std),
+            ToTensorV2()
+        ])
+        hi = '''
         transform = A.Compose([
             A.RandomCrop(*args.train_size),
             *get_list_of_ops(args.augmentations, A),
             A.Normalize(mean=args.mean, std=args.std),
             ToTensorV2()
         ])
+        '''
     else:
         transform = A.Compose([
             A.Resize(*args.eval_size),

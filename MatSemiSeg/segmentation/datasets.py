@@ -31,7 +31,7 @@ class DatasetTemplate(data.Dataset):
         img_name = self.img_names[index]
         img = self._get_image(img_name)
         label = self._get_label(img_name)
-        img, label = self._transform(img, label)
+        img, label = self._transform(img, label) #help
         return img, label, img_name
 
     def __len__(self):
@@ -52,7 +52,7 @@ class DatasetTemplate(data.Dataset):
 
     def _transform(self, img, label):
         img = np.array(img)
-        transformed = self.transform(image=img, mask=label)
+        transformed = self.transform(image=img, mask=label) #WHAT
         img = transformed['image']
         label = transformed['mask']
         return img, label
@@ -151,7 +151,7 @@ def get_transform(args, is_train):
             #add others , 
         }
 
-        transform = A.Compose([
+        transform = T.Compose([
             augmentation_dict[args.augmentations['type']],
             A.Normalize(mean=args.mean, std=args.std),
             ToTensorV2()

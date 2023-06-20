@@ -143,7 +143,7 @@ def get_transform(args, is_train):
     """
     if is_train:
         policies = {
-            'cifar10': A.AutoAugmentPolicy.CIFAR10
+            'cifar10': T.AutoAugmentPolicy.CIFAR10
         }
         augmentation_dict = {
             'randaugment': A.AlbumentationsRandAugment(args.augmentations['num_ops'], args.augmentations['magnitude']),

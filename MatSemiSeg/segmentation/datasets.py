@@ -52,7 +52,7 @@ class DatasetTemplate(data.Dataset):
 
     def _transform(self, img, label):
         img = np.array(img)
-        transformed = self.transform(image=img) #, mask=label
+        transformed = self.transform(img) #image=, mask=label
         img = transformed['image']
         label = transformed['mask']
         return img, label

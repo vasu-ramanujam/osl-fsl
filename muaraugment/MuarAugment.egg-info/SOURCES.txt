@@ -1,0 +1,14 @@
+LICENSE
+README.md
+setup.cfg
+setup.py
+MuarAugment.egg-info/PKG-INFO
+MuarAugment.egg-info/SOURCES.txt
+MuarAugment.egg-info/dependency_links.txt
+MuarAugment.egg-info/requires.txt
+MuarAugment.egg-info/top_level.txt
+muar/__init__.py
+muar/augmentations.py
+muar/loss.py
+muar/transform_lists.py
+muar/utils.py

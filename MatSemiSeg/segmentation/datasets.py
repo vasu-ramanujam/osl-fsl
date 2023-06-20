@@ -146,7 +146,7 @@ def get_transform(args, is_train):
             'cifar10': T.AutoAugmentPolicy.CIFAR10
         }
         augmentation_dict = {
-            'randaugment': A.AlbumentationsRandAugment(args.augmentations['num_ops'], args.augmentations['magnitude']),
+            'randaugment': AlbumentationsRandAugment(args.augmentations['num_ops'], args.augmentations['magnitude']),
             'autoaugment': T.AutoAugment(policies[args.augmentations['policy']])
             #add others , 
         }

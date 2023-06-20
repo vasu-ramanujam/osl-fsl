@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
 import torchvision.transforms as T
+from muar.augmentations import AlbumentationsRandAugment
 
 
 class DatasetTemplate(data.Dataset):

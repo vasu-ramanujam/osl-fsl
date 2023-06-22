@@ -143,7 +143,7 @@ def get_transform(args, is_train):
     :return: transform operations to be performed on the image
     """
     if is_train:
-        policies = {
+        hi = '''policies = {
             'cifar10': T.AutoAugmentPolicy.CIFAR10
         }
         augmentation_dict = {
@@ -154,6 +154,12 @@ def get_transform(args, is_train):
 
         transform = A.Compose([
             augmentation_dict[args.augmentations['type']],
+            A.Normalize(mean=args.mean, std=args.std),
+            ToTensorV2()
+        ])'''
+        transform = A.Compose([
+            A.RandomCrop(*args.train_size),
+            *get_list_of_ops(args.augmentations, A),
             A.Normalize(mean=args.mean, std=args.std),
             ToTensorV2()
         ])

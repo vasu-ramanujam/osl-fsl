@@ -204,7 +204,30 @@ class JaccardLoss(nn.Module):
         jaccard = inter / (union + eps)
         return 1. - jaccard.mean()
 
+#PyTorch
+ALPHA = 0.8
+GAMMA = 2
 
+class FocalLoss(nn.Module):
+    def __init__(self, weight=None, size_average=True):
+        super(FocalLoss, self).__init__()
+
+    def forward(self, inputs, targets, alpha=ALPHA, gamma=GAMMA, smooth=1):
+        
+        #comment out if your model contains a sigmoid or equivalent activation layer
+        inputs = F.sigmoid(inputs)       
+        
+        #flatten label and prediction tensors
+        inputs = inputs.view(-1)
+        targets = targets.view(-1)
+        
+        #first compute binary cross-entropy 
+        BCE = F.binary_cross_entropy(inputs, targets, reduction='mean')
+        BCE_EXP = torch.exp(-BCE)
+        focal_loss = alpha * (1-BCE_EXP)**gamma * BCE
+                       
+        return focal_loss
+    
 def get_loss_fn(loss_type, ignore_index):
     if loss_type == 'CE':
         return nn.CrossEntropyLoss(ignore_index=ignore_index)
@@ -212,5 +235,7 @@ def get_loss_fn(loss_type, ignore_index):
         return DiceLoss(ignore_index=ignore_index)
     elif loss_type == 'Jaccard':
         return JaccardLoss(ignore_index=ignore_index)
+    elif loss_type == 'Focal':
+        return FocalLoss(ignore_index=ignore_index)
     else:
         raise ValueError(f"unsupported loss type: {loss_type}")

@@ -236,6 +236,6 @@ def get_loss_fn(loss_type, ignore_index):
     elif loss_type == 'Jaccard':
         return JaccardLoss(ignore_index=ignore_index)
     elif loss_type == 'Focal':
-        return FocalLoss(ignore_index=ignore_index)
+        return FocalLoss() #ignore_index=ignore_index
     else:
         raise ValueError(f"unsupported loss type: {loss_type}")

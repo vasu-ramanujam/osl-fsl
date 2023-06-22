@@ -230,9 +230,9 @@ class FocalLoss(nn.Module):
 '''    
 '''
 class FocalLoss(nn.Module):
-    '''
-    #Multi-class Focal Loss
-    '''
+    
+    Multi-class Focal Loss
+    
     def __init__(self, gamma=2, weight=None):
         super(FocalLoss, self).__init__()
         self.gamma = gamma

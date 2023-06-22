@@ -228,7 +228,7 @@ class FocalLoss(nn.Module):
                        
         return focal_loss
 '''    
-class FocalLoss(nn.Module):
+'''class FocalLoss(nn.Module):
     '''
     Multi-class Focal Loss
     '''
@@ -248,7 +248,35 @@ class FocalLoss(nn.Module):
         logpt = (1-pt)**self.gamma * logpt
         loss = F.nll_loss(logpt, target, self.weight)
         return loss
-    
+'''
+#https://github.com/mlyg/unified-focal-loss/blob/main/loss_functions.py
+def focal_loss(alpha=None, gamma_f=2.):
+    """Focal loss is used to address the issue of the class imbalance problem. A modulation term applied to the Cross-Entropy loss function.
+    Parameters
+    ----------
+    alpha : float, optional
+        controls relative weight of false positives and false negatives. alpha > 0.5 penalises false negatives more than false positives, by default None
+    gamma_f : float, optional
+        focal parameter controls degree of down-weighting of easy examples, by default 2.
+    """
+    def loss_function(y_true, y_pred):
+        axis = identify_axis(y_true.get_shape())
+        # Clip values to prevent division by zero error
+        epsilon = K.epsilon()
+        y_pred = K.clip(y_pred, epsilon, 1. - epsilon)
+        cross_entropy = -y_true * K.log(y_pred)
+
+        if alpha is not None:
+            alpha_weight = np.array(alpha, dtype=np.float32)
+            focal_loss = alpha_weight * K.pow(1 - y_pred, gamma_f) * cross_entropy
+        else:
+            focal_loss = K.pow(1 - y_pred, gamma_f) * cross_entropy
+
+        focal_loss = K.mean(K.sum(focal_loss, axis=[-1]))
+        return focal_loss
+        
+    return loss_function
+
 def get_loss_fn(loss_type, ignore_index):
     if loss_type == 'CE':
         return nn.CrossEntropyLoss(ignore_index=ignore_index)
@@ -257,6 +285,6 @@ def get_loss_fn(loss_type, ignore_index):
     elif loss_type == 'Jaccard':
         return JaccardLoss(ignore_index=ignore_index)
     elif loss_type == 'Focal':
-        return FocalLoss() #ignore_index=ignore_index
+        return focal_loss() #ignore_index=ignore_index
     else:
         raise ValueError(f"unsupported loss type: {loss_type}")

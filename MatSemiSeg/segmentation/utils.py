@@ -203,7 +203,7 @@ class JaccardLoss(nn.Module):
         union = (pred + target).sum(dim=[0, 2]) - inter
         jaccard = inter / (union + eps)
         return 1. - jaccard.mean()
-
+'''
 #PyTorch
 ALPHA = 0.8
 GAMMA = 2
@@ -227,6 +227,27 @@ class FocalLoss(nn.Module):
         focal_loss = alpha * (1-BCE_EXP)**gamma * BCE
                        
         return focal_loss
+'''    
+class FocalLoss(nn.Module):
+    '''
+    Multi-class Focal Loss
+    '''
+    def __init__(self, gamma=2, weight=None):
+        super(FocalLoss, self).__init__()
+        self.gamma = gamma
+        self.weight = weight
+        self.reduction = reduction
+
+    def forward(self, input, target):
+        """
+        input: [N, C], float32
+        target: [N, ], int64
+        """
+        logpt = F.log_softmax(input, dim=1)
+        pt = torch.exp(logpt)
+        logpt = (1-pt)**self.gamma * logpt
+        loss = F.nll_loss(logpt, target, self.weight)
+        return loss
     
 def get_loss_fn(loss_type, ignore_index):
     if loss_type == 'CE':

@@ -285,7 +285,7 @@ def get_loss_fn(loss_type, ignore_index):
         return DiceLoss(ignore_index=ignore_index)
     elif loss_type == 'Jaccard':
         return JaccardLoss(ignore_index=ignore_index)
-    elif loss_type == 'Focal':
-        return focal_loss() #ignore_index=ignore_index
+    #elif loss_type == 'Focal':
+    #    return focal_loss() #ignore_index=ignore_index
     else:
         raise ValueError(f"unsupported loss type: {loss_type}")

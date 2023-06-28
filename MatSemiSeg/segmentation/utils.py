@@ -272,7 +272,6 @@ def focal_loss(alpha=None, gamma_f=2.):
             focal_loss = alpha_weight * K.pow(1 - y_pred, gamma_f) * cross_entropy
         else:
             focal_loss = K.pow(1 - y_pred, gamma_f) * cross_entropy
-
         focal_loss = K.mean(K.sum(focal_loss, axis=[-1]))
         return focal_loss
         
@@ -285,8 +284,9 @@ def get_loss_fn(loss_type, ignore_index):
         return DiceLoss(ignore_index=ignore_index)
     elif loss_type == 'Jaccard':
         return JaccardLoss(ignore_index=ignore_index)
-    elif loss_type == 'Focal':
-        print("got focal loss")
-        return focal_loss() #ignore_index=ignore_index
+    #elif loss_type == 'Focal':
+    #    calced_loss = focal_loss()
+    #    print("got focal loss")
+    #    return calced_loss #ignore_index=ignore_index
     else:
         raise ValueError(f"unsupported loss type: {loss_type}")

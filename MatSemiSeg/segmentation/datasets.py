@@ -155,7 +155,7 @@ def get_transform(args, is_train):
 
         transform = A.Compose([
             A.RandomCrop(*args.train_size),
-            augmentation_dict[args.augmentations['type']],
+            #augmentation_dict[args.augmentations['type']],
             A.Normalize(mean=args.mean, std=args.std),
             ToTensorV2()
         ])

@@ -153,11 +153,12 @@ def get_transform(args, is_train):
                       A.RandomBrightnessContrast(brightness_limit=MAGN/30, contrast_limit=MAGN/30, p=1),
                       A.Emboss(alpha=(0.2, 0.5), strength=(0.03 * MAGN, 0.03 * MAGN + .1), p=1),
                       A.FancyPCA (alpha=MAGN/30, p=1),
-                      A.InvertImg(p=1),
+                      #A.InvertImg(p=1),
                       A.RandomToneCurve(scale=MAGN/30, p=1)
                      ]
         # randomly choose `N_TFMS` transforms from the list
-        composition = np.random.choice(transforms, N_TFMS, replace=False)   
+        rng = np.random.default_rng()
+        composition = rng.choice(transforms, N_TFMS, replace=False)   
         print(composition) 
         return A.Compose(composition)
 

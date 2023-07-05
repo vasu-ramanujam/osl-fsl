@@ -147,7 +147,7 @@ def get_transform(args, is_train):
         # initialize the transform list
         transforms = [A.HorizontalFlip(p=1), 
                       A.Rotate(MAGN*9, p=1),  
-                      A.RandomBrightness(MAGN/20, p=1)
+                      A.RandomBrightness(MAGN//5, p=1)
                       A.Posterize(num_bits=MAGN//5, p=1),
                       A.Sharpen(alpha=(0.2, 0.5), lightness=(0.5, 1.0), p=1),  
                       A.RandomBrightnessContrast (brightness_limit=0.2, contrast_limit=0.2, p=1),

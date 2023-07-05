@@ -148,13 +148,15 @@ def get_transform(args, is_train):
         print(f"n_tfms: {N_TFMS}, magn: {MAGN}")
         transforms = [A.HorizontalFlip(p=1), 
                       A.Rotate(MAGN*9, p=1),  
-                      A.RandomBrightness(limit=MAGN/30, p=1),
                       A.Posterize(num_bits=MAGN*8//30, p=1),
-                      A.Sharpen(alpha=(0.2, 0.5), lightness=(0.5, 1.0), p=1),  
-                      A.RandomBrightnessContrast (brightness_limit=0.2, contrast_limit=0.2, p=1)
+                      A.Sharpen(alpha=(0.03 * MAGN, 0.03 * MAGN + .1), p=1),  
+                      A.RandomBrightnessContrast(brightness_limit=MAGN/30, contrast_limit=MAGN/30, p=1),
+                      A.Emboss(alpha=(0.2, 0.5), strength=(0.03 * MAGN, 0.03 * MAGN + .1), p=1),
+                      A.FancyPCA (alpha=MAGN/30, p=1)
                      ]
         # randomly choose `N_TFMS` transforms from the list
         composition = np.random.choice(transforms, N_TFMS, replace=False)   
+        print(composition) #see what were chosen?
         return A.Compose(composition)
 
 

@@ -5,7 +5,7 @@ _version: 2  # An internal value that indicates a version of the config schema. 
 # Please do not change it manually.
 
 
-task: semantic_segmentation # Deep learning task. Should either be `classification` or `semantic_segmentation`.
+task: semantic_segmentation # 
 
 
 policy_model:

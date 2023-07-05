@@ -154,7 +154,7 @@ def get_transform(args, is_train):
                       A.RandomBrightnessContrast (brightness_limit=0.2, contrast_limit=0.2, p=1)
                      ]
         # randomly choose `N_TFMS` transforms from the list
-        composition = np.random.choice(transforms, N_TFMS, replacement=False)   
+        composition = np.random.choice(transforms, N_TFMS, replace=False)   
         return A.Compose(composition)
 
 

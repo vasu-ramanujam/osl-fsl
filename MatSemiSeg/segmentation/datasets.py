@@ -125,13 +125,13 @@ class FolderDataset(DatasetTemplate):
         return img, label, img_name
 
 
-def get_list_of_ops(args, library):
-    if args is None: return []
-    ops = []
-    for func_name in args:
-        func = getattr(library, func_name)
-        ops.append(func(**args[func_name]))
-    return ops
+#def get_list_of_ops(args, library):
+#    if args is None: return []
+#    ops = []
+#    for func_name in args:
+#        func = getattr(library, func_name)
+#        ops.append(func(**args[func_name]))
+#    return ops
 
 
 def get_transform(args, is_train):
@@ -142,20 +142,26 @@ def get_transform(args, is_train):
     :param is_train: if the transform is for training or evaluating
     :return: transform operations to be performed on the image
     """
+    
+    def new_rand_augment(N_TFMS=2, MAGN=9):
+        # initialize the transform list
+        transforms = [A.HorizontalFlip(p=1), 
+                      A.Rotate(MAGN*9, p=1),  
+                      A.RandomBrightness(MAGN/20, p=1)
+                      A.Posterize(num_bits=MAGN//5, p=1),
+                      A.Sharpen(alpha=(0.2, 0.5), lightness=(0.5, 1.0), p=1),  
+                      A.RandomBrightnessContrast (brightness_limit=0.2, contrast_limit=0.2, p=1),
+                     ]
+        # randomly choose `N_TFMS` transforms from the list
+        composition = np.random.choice(transforms, N_TFMS, replacement=False)   
+        return A.Compose(composition)
+
+
     if is_train:
-        policies = {
-            'cifar10': T.AutoAugmentPolicy.CIFAR10
-        }
-        
-        augmentation_dict = {
-            'randaugment': T.RandAugment(args.augmentations['num_ops'], args.augmentations['magnitude']),
-            'autoaugment': T.AutoAugment(policies[args.augmentations['policy']])
-            #add others , 
-        }
 
         transform = A.Compose([
             A.RandomCrop(*args.train_size),
-            T.RandAugment(2, 9), 
+            new_rand_augment(args.augmentations['num_ops'], args.augmentations['magnitude']), 
             A.Normalize(mean=args.mean, std=args.std),
             ToTensorV2()
         ])

@@ -143,10 +143,14 @@ def get_transform(args, is_train):
     :return: transform operations to be performed on the image
     """
     
-    def new_rand_augment(N_TFMS=2, MAGN=9):
-        # initialize the transform list
-        print(f"n_tfms: {N_TFMS}, magn: {MAGN}")
-        transforms = [ A.HorizontalFlip(p=1), 
+
+
+
+    if is_train:
+        def new_rand_augment(N_TFMS=2, MAGN=9):
+            # initialize the transform list
+            print(f"n_tfms: {N_TFMS}, magn: {MAGN}")
+            transforms = [ A.HorizontalFlip(p=1), 
                       A.Rotate(MAGN*9, p=1),  
                       A.Posterize(num_bits=MAGN*8//30, p=1),
                       A.Sharpen(alpha=(0.03 * MAGN, 0.03 * MAGN + .1), p=1),  
@@ -156,15 +160,12 @@ def get_transform(args, is_train):
                       #A.InvertImg(p=1),
                       A.RandomToneCurve(scale=MAGN/30, p=1)
                      ]
-        # randomly choose `N_TFMS` transforms from the list
-        rng = np.random.default_rng()
-        composition = rng.choice(transforms, N_TFMS, replace=False)   
-        print(composition) 
-        return A.Compose(composition)
-
-
-    if is_train:
-
+            # randomly choose `N_TFMS` transforms from the list
+            rng = np.random.default_rng()
+            composition = rng.choice(transforms, N_TFMS, replace=False)   
+            print(composition) 
+            return A.Compose(composition)
+        
         transform = A.Compose([
             A.RandomCrop(*args.train_size),
             new_rand_augment(args.augmentations['num_ops'], args.augmentations['magnitude']), 

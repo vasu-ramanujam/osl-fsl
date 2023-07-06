@@ -150,14 +150,13 @@ def get_transform(args, is_train):
         def new_rand_augment(N_TFMS=2, MAGN=9):
             # initialize the transform list
             print(f"n_tfms: {N_TFMS}, magn: {MAGN}")
-            transforms = [ A.HorizontalFlip(p=1), 
+            transforms = [ A.Flip(p=1), 
                       A.Rotate(MAGN*9, p=1),  
                       A.Posterize(num_bits=MAGN*8//30, p=1),
                       A.Sharpen(alpha=(0.03 * MAGN, 0.03 * MAGN + .1), p=1),  
                       A.RandomBrightnessContrast(brightness_limit=MAGN/30, contrast_limit=MAGN/30, p=1),
-                      A.Emboss(alpha=(0.2, 0.5), strength=(0.03 * MAGN, 0.03 * MAGN + .1), p=1),
                       A.FancyPCA (alpha=MAGN/30, p=1),
-                      #A.InvertImg(p=1),
+                      A.ShiftScaleRotate(shift_limit = MAGN/30, rotate_limit=MAGN*6, p=1),
                       A.RandomToneCurve(scale=MAGN/30, p=1)
                      ]
             # randomly choose `N_TFMS` transforms from the list
@@ -180,7 +179,6 @@ def get_transform(args, is_train):
         #    ToTensorV2()
         #])
         
-        #albumentations and pytorch functions dont work well together, ugh
     else:
         transform = A.Compose([
             A.Resize(*args.eval_size),
@@ -219,6 +217,7 @@ def visualize_augmentations(dataset, idx=0, n_samples=5):
 
 def get_dataloaders(args):
     transform_train = get_transform(args, is_train=True)
+    
     transform_eval = get_transform(args, is_train=False)
     s_info = args.split_info
     if s_info.type == "CSVSplit":

@@ -156,7 +156,7 @@ def get_transform(args, is_train):
                       #A.Sharpen(alpha=(0.03 * MAGN, 0.03 * MAGN + .1), p=1),  
                       A.RandomBrightnessContrast(brightness_limit=MAGN/30, contrast_limit=MAGN/30, p=1),
                       A.FancyPCA (alpha=MAGN/30, p=1),
-                      A.ShiftScaleRotate(shift_limit = MAGN/30, rotate_limit=MAGN*6, p=1)
+                      A.ShiftScaleRotate(shift_limit = MAGN/30, rotate_limit=MAGN*6, p=1),
                       A.RandomToneCurve(scale=MAGN/30, p=1)
                      ]
             # randomly choose `N_TFMS` transforms from the list

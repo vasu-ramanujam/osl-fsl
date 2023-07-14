@@ -142,11 +142,9 @@ def get_transform(args, is_train):
     :param is_train: if the transform is for training or evaluating
     :return: transform operations to be performed on the image
     """
-    
-
-
 
     if is_train:
+        '''
         def new_rand_augment(N_TFMS=2, MAGN=9):
             # initialize the transform list
             print(f"n_tfms: {N_TFMS}, magn: {MAGN}")
@@ -165,9 +163,11 @@ def get_transform(args, is_train):
             print(composition) 
             return A.Compose(composition)
         
+        '''
+        auto_transform = A.load("albumentations_configs/cityscapes_autoalbument.json")
         transform = A.Compose([
             A.RandomCrop(*args.train_size),
-            new_rand_augment(args.augmentations['num_ops'], args.augmentations['magnitude']), 
+            auto_transform, 
             A.Normalize(mean=args.mean, std=args.std),
             ToTensorV2()
         ])

@@ -51,14 +51,24 @@ class SearchDataset(torch.utils.data.Dataset):
         return img, label
     
     
-class TextSplitSearchDataset(SearchDataset):
-    """A dataset class that reads a text split file containing the name of the
-    images in the target dataset split.
+class FolderSearchDataset(SearchDataset):
+    """A dataset class that reads images from a folder. Only images with suffix
+    .tif, .jpg, .png are taken. If labels are not provided, the output label is
+    -1 everywhere.
     """
-    def __init__(self, img_dir, label_dir, split_txt, transform):
-        """
-        :param split_txt: the path of the text file that contains the names of
-        the images in the split
-        """
+    def __init__(self, img_dir, label_dir, transform):
         super().__init__(img_dir, label_dir, transform)
-        self.img_names = np.loadtxt(split_txt, dtype=str, delimiter='\n', ndmin=1)
+        self.img_names = [name for name in os.listdir(self.img_dir)
+                          if splitext(name)[1] in ['.tif', '.jpg', '.png']]
+        self.no_label = label_dir is None
+
+    def __getitem__(self, index):
+        img_name = self.img_names[index]
+        img = self._get_image(img_name)
+        if self.no_label:
+            label = -np.ones_like(img)[:, :, 0]
+        else:
+            label = self._get_label(img_name)
+        img, label = self._transform(img, label)
+        return img, label, img_name
+

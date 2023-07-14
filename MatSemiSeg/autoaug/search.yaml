@@ -55,7 +55,7 @@ semantic_segmentation_model:
 
 data:
   dataset:
-    _target_: dataset.TextSplitSearchDataset
+    _target_: dataset.FolderSearchDataset
     root: ~/data/uhcs
     split: train_sixteen
   # Class for instantiating a PyTorch dataset.

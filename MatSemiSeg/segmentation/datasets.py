@@ -32,7 +32,7 @@ class DatasetTemplate(data.Dataset):
         img_name = self.img_names[index]
         img = self._get_image(img_name)
         label = self._get_label(img_name)
-        img, label = self._transform(img, label) #help
+        img, label = self._transform(img, label) 
         return img, label, img_name
 
     def __len__(self):

@@ -11,7 +11,7 @@ task: semantic_segmentation #
 policy_model:
 # Configuration for Policy model which is used to augment input images.
 
-  num_sub_policies: 40
+  num_sub_policies: 25
 # Number of augmentation sub-policies. When an image passes through an augmentation pipeline, Faster AutoAugment
 # randomly chooses one sub-policy and uses augmentations from that sub-policy to transform an input image. A larger
 # number of sub-policies leads to a more diverse set of augmentations and better performance of a model trained on
@@ -55,7 +55,9 @@ semantic_segmentation_model:
 
 data:
   dataset:
-    _target_: dataset.SearchDataset
+    _target_: dataset.TextSplitSearchDataset
+    root: ~/data/uhcs
+    split: train_sixteen
   # Class for instantiating a PyTorch dataset.
 
   normalization:

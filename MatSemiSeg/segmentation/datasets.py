@@ -164,7 +164,7 @@ def get_transform(args, is_train):
             return A.Compose(composition)
         
         '''
-        policy_file = args.augmentations[auto_policy]
+        policy_file = args.augmentations["auto_policy"]
         transform = A.load(f"albumentations_configs/{policy_file}.json")
         #transform = A.Compose([
         #    A.RandomCrop(*args.train_size),

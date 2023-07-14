@@ -164,13 +164,13 @@ def get_transform(args, is_train):
             return A.Compose(composition)
         
         '''
-        auto_transform = A.load("albumentations_configs/cityscapes_autoalbument.json")
-        transform = A.Compose([
-            A.RandomCrop(*args.train_size),
-            auto_transform, 
-            A.Normalize(mean=args.mean, std=args.std),
-            ToTensorV2()
-        ])
+        transform = A.load("albumentations_configs/cityscapes_autoalbument.json")
+        #transform = A.Compose([
+        #    A.RandomCrop(*args.train_size),
+        #    auto_transform, 
+        #    A.Normalize(mean=args.mean, std=args.std),
+        #    ToTensorV2()
+        #])
         
         #transform = A.Compose([
         #    A.RandomCrop(*args.train_size),

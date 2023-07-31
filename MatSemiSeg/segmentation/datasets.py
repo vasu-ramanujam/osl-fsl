@@ -144,8 +144,8 @@ def get_transform(args, is_train):
     """
 
     if is_train:
-        '''
-        def new_rand_augment(N_TFMS=2, MAGN=9):
+        
+        '''def new_rand_augment(N_TFMS=2, MAGN=9):
             # initialize the transform list
             print(f"n_tfms: {N_TFMS}, magn: {MAGN}")
             transforms = [ #A.Flip(p=1), 
@@ -161,17 +161,32 @@ def get_transform(args, is_train):
             rng = np.random.default_rng()
             composition = rng.choice(transforms, N_TFMS, replace=False)   
             print(composition) 
-            return A.Compose(composition)
+            return A.Compose(composition)'''
         
-        '''
-        policy_file = args.augmentations["auto_policy"]
-        transform = A.load(f"albumentations_configs/{policy_file}.json")
-        #transform = A.Compose([
-        #    A.RandomCrop(*args.train_size),
-        #    auto_transform, 
-        #    A.Normalize(mean=args.mean, std=args.std),
-        #    ToTensorV2()
-        #])
+        transform_list = [ A.Flip(p=1), 
+                   A.Rotate(MAGN*9, p=1),  
+                   A.Posterize(num_bits=8 - (MAGN*8//30), p=1),
+                   A.RandomBrightnessContrast(brightness_limit=MAGN/30, contrast_limit=MAGN/30, p=1),
+                   A.FancyPCA (alpha=MAGN/30, p=1),
+                   A.ShiftScaleRotate(shift_limit = MAGN/30, rotate_limit=MAGN*6, p=1),
+                   A.RandomToneCurve(scale=MAGN/30, p=1)
+                  ]
+        trans_combos = np.itertools.combinations(transform_list, 2)
+        
+        if args.augmentations["aug_seed"] not in range(21):
+            print("aug_seed not in range 0 thru 20. try again")
+        
+        our_augs = trans_combos[args.augmentations["aug_seed"]]
+        print(our_augs)
+        
+        #policy_file = args.augmentations["auto_policy"]
+        #transform = A.load(f"albumentations_configs/{policy_file}.json")
+        transform = A.Compose([
+            A.RandomCrop(*args.train_size),
+            A.Compose(our_augs), 
+            A.Normalize(mean=args.mean, std=args.std),
+            ToTensorV2()
+        ])
         
         #transform = A.Compose([
         #    A.RandomCrop(*args.train_size),

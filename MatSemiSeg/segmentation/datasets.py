@@ -162,7 +162,7 @@ def get_transform(args, is_train):
             composition = rng.choice(transforms, N_TFMS, replace=False)   
             print(composition) 
             return A.Compose(composition)'''
-        
+        MAGN = args.augmentations["magnitude"]
         transform_list = [ A.Flip(p=1), 
                    A.Rotate(MAGN*9, p=1),  
                    A.Posterize(num_bits=8 - (MAGN*8//30), p=1),

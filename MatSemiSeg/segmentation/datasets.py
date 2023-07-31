@@ -173,7 +173,7 @@ def get_transform(args, is_train):
                    A.RandomToneCurve(scale=MAGN/30, p=1)
                   ]
         trans_combos = combinations(transform_list, 2)
-        
+        print(trans_combos)
         if args.augmentations["aug_seed"] not in range(21):
             print("aug_seed not in range 0 thru 20. try again")
         

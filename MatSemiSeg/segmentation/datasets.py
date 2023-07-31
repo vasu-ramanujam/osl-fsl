@@ -10,6 +10,7 @@ import albumentations as A
 from albumentations.pytorch import ToTensorV2
 import torchvision.transforms as T
 from muar.augmentations import AlbumentationsRandAugment
+from itertools import combinations
 
 
 class DatasetTemplate(data.Dataset):
@@ -171,7 +172,7 @@ def get_transform(args, is_train):
                    A.ShiftScaleRotate(shift_limit = MAGN/30, rotate_limit=MAGN*6, p=1),
                    A.RandomToneCurve(scale=MAGN/30, p=1)
                   ]
-        trans_combos = np.itertools.combinations(transform_list, 2)
+        trans_combos = combinations(transform_list, 2)
         
         if args.augmentations["aug_seed"] not in range(21):
             print("aug_seed not in range 0 thru 20. try again")

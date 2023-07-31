@@ -172,7 +172,7 @@ def get_transform(args, is_train):
                    A.ShiftScaleRotate(shift_limit = MAGN/30, rotate_limit=MAGN*6, p=1),
                    A.RandomToneCurve(scale=MAGN/30, p=1)
                   ]
-        trans_combos = combinations(transform_list, 2)
+        trans_combos = list(combinations(transform_list, 2))
         print(trans_combos)
         if args.augmentations["aug_seed"] not in range(21):
             print("aug_seed not in range 0 thru 20. try again")
